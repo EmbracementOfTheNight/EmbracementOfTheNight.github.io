@@ -47,7 +47,7 @@
   <div id="results"></div>
 
   <script>
-    const API_KEY = '';  // Replace this with your YouTube API key
+    const API_KEY = 'AIzaSyBt5lB25IQUMDuCOTK3TAJNoFu9GYaIxBc';  // Replace this with your YouTube API key
 
     function searchVideos() {
       const query = document.getElementById('searchInput').value;
@@ -77,7 +77,7 @@
                   videoDiv.className = 'video';
                   videoDiv.innerHTML = `
                     <iframe 
-                      src="https://www.youtube.com/embed/${videoId}" 
+                      src="https://www.youtube-nocookie.com/embed/${videoId}" 
                       frameborder="0" 
                       allowfullscreen>
                     </iframe>
