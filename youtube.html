@@ -47,7 +47,7 @@
   <div id="results"></div>
 
   <script>
-    const API_KEY = 'AIzaSyBt5lB25IQUMDuCOTK3TAJNoFu9GYaIxBc';  // Replace this with your YouTube API key
+    const API_KEY = '';  // Replace this with your YouTube API key
 
     function searchVideos() {
       const query = document.getElementById('searchInput').value;
@@ -57,26 +57,43 @@
       fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=6&q=${encodeURIComponent(query)}&key=${API_KEY}`)
         .then(response => response.json())
         .then(data => {
-          resultsDiv.innerHTML = ''; // Clear previous results
-
-          data.items.forEach(item => {
-            const videoId = item.id.videoId;
-            const title = item.snippet.title;
-
-            const videoDiv = document.createElement('div');
-            videoDiv.className = 'video';
-
-            videoDiv.innerHTML = `
-              <iframe 
-                src="https://www.youtube.com/embed/${videoId}" 
-                frameborder="0" 
-                allowfullscreen>
-              </iframe>
-              <h2>${title}</h2>
-            `;
-
-            resultsDiv.appendChild(videoDiv);
-          });
+          resultsDiv.innerHTML = '';
+          const videoIds = data.items.map(item => item.id.videoId).join(",");
+          if (!videoIds) {
+            resultsDiv.innerHTML = 'No videos found.';
+            return;
+          }
+          // Now get video details to check embeddable status
+          fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet,player,status&id=${videoIds}&key=${API_KEY}`)
+            .then(response => response.json())
+            .then(videoData => {
+              let foundEmbeddable = false;
+              videoData.items.forEach(item => {
+                if (item.status && item.status.embeddable) {
+                  foundEmbeddable = true;
+                  const videoId = item.id;
+                  const title = item.snippet.title;
+                  const videoDiv = document.createElement('div');
+                  videoDiv.className = 'video';
+                  videoDiv.innerHTML = `
+                    <iframe 
+                      src="https://www.youtube.com/embed/${videoId}" 
+                      frameborder="0" 
+                      allowfullscreen>
+                    </iframe>
+                    <h2>${title}</h2>
+                  `;
+                  resultsDiv.appendChild(videoDiv);
+                }
+              });
+              if (!foundEmbeddable) {
+                resultsDiv.innerHTML = 'No embeddable videos found.';
+              }
+            })
+            .catch(error => {
+              console.error('YouTube Video Details API Error:', error);
+              resultsDiv.innerHTML = 'An error occurred while checking video details.';
+            });
         })
         .catch(error => {
           console.error('YouTube API Error:', error);
