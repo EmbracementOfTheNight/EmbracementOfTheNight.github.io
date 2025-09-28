@@ -75,6 +75,7 @@
                   const title = item.snippet.title;
                   const videoDiv = document.createElement('div');
                   videoDiv.className = 'video';
+                  referrerpolicy="strict-origin-when-cross-origin"
                   videoDiv.innerHTML = `
                     <iframe 
                       src="https://www.youtube-nocookie.com/embed/${videoId}" 
@@ -84,6 +85,7 @@
                     <h2>${title}</h2>
                   `;
                   resultsDiv.appendChild(videoDiv);
+                  
                 }
               });
               if (!foundEmbeddable) {
