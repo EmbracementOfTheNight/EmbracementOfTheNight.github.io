@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>SleepHaven</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<header class="Header">
+		<h1>Game selection</h1>
+		<p>Click on a game to play it!</p>
+	</header>
+	<main>
+		<section class="gallery">
+			<a href="geometrydashlite.io/geometry-dash-lite.html" target="_blank" class="image-link">
+				<img src="PictureStorage/1702661368_Geometrydashlogo.webp">
+				<span>Geometry Dash</span>
+			</a>
+			<a href="deltarune.html" target="_blank" class="image-link">
+				<img src="PictureStorage/delta.png">
+				<span>DELTARUNE</span>
+			</a>
+			<a href="mc/minecraft.html" target="_blank" class="image-link">
+				<img src="PictureStorage/mc11.webp">
+				<span>Minecraft</span>
+			</a>
+			<a href="youtube.html" target="_blank" class="image-link">
+				<img src="PictureStorage/TocaBocaImage.jpg">
+				<span>Toca Boca</span>
+			</a>
+			<a href="https://example.com/2" target="_blank" class="image-link">
+				<img src="https://via.placeholder.com/200x150?text=Image+2">
+				<span>Link 2</span>
+			</a>
+			<a href="https://example.com/3" target="_blank" class="image-link">
+				<img src="https://via.placeholder.com/200x150?text=Image+3">
+				<span>Link 3</span>
+			</a>
+			<a href="https://example.com/1" target="_blank" class="image-link">
+				<img src="https://via.placeholder.com/200x150?text=Image+1">
+				<span>Link 1</span>
+			</a>
+			<a href="https://example.com/2" target="_blank" class="image-link">
+				<img src="https://via.placeholder.com/200x150?text=Image+2">
+				<span>Link 2</span>
+			</a>
+			<a href="https://example.com/3" target="_blank" class="image-link">
+				<img src="https://via.placeholder.com/200x150?text=Image+3">
+				<span>Link 3</span>
+			</a>
+            <a href="https://example.com/1" target="_blank" class="image-link">
+				<img src="https://via.placeholder.com/200x150?text=Image+1">
+				<span>Link 1</span>
+			</a>
+			<a href="https://example.com/2" target="_blank" class="image-link">
+				<img src="https://via.placeholder.com/200x150?text=Image+2">
+				<span>Link 2</span>
+			</a>
+			<a href="https://example.com/3" target="_blank" class="image-link">
+				<img src="https://via.placeholder.com/200x150?text=Image+3">
+				<span>Link 3</span>
+			</a>
+            <a href="https://example.com/1" target="_blank" class="image-link">
+				<img src="https://via.placeholder.com/200x150?text=Image+1">
+				<span>Link 1</span>
+			</a>
+			<a href="https://example.com/2" target="_blank" class="image-link">
+				<img src="https://via.placeholder.com/200x150?text=Image+2">
+				<span>Link 2</span>
+			</a>
+			<a href="https://example.com/3" target="_blank" class="image-link">
+				<img src="https://via.placeholder.com/200x150?text=Image+3">
+				<span>Link 3</span>
+			</a>
+		</section>
+	</main>
+	</main>
+	<div id="user-code-container"></div>
+</body>
+	</html>
+<script>
+// Generate a random code (8 alphanumeric chars)
+function generateUserCode(length = 4) {
+	const chars = '123456789';
+	let code = '';
+	for (let i = 0; i < length; i++) {
+		code += chars.charAt(Math.floor(Math.random() * chars.length));
+	}
+	return code;
+}
+
+// Get or create user code
+let userCode = localStorage.getItem('userCode');
+if (!userCode) {
+	userCode = generateUserCode();
+	localStorage.setItem('userCode', userCode);
+}
+
+// Show code in top right
+const codeDiv = document.getElementById('user-code-container');
+codeDiv.textContent = `Your code: ${userCode}`;
+codeDiv.style.position = 'fixed';
+codeDiv.style.top = '10px';
+codeDiv.style.right = '20px';
+codeDiv.style.background = 'rgba(30,30,60,0.95)';
+codeDiv.style.color = '#fff';
+codeDiv.style.padding = '50px, 50px';
+codeDiv.style.borderRadius = '12px';
+codeDiv.style.fontWeight = 'bold';
+codeDiv.style.fontFamily = 'monospace';
+codeDiv.style.zIndex = '9999';
+</script>

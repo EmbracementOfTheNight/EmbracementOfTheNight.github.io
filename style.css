@@ -1,0 +1,86 @@
+/* Custom Scrollbar Styles */
+html {
+	scrollbar-width: thin;
+	scrollbar-color: #3366cc #f0f0f0;
+}
+
+/* For Webkit browsers */
+body::-webkit-scrollbar {
+	width: 12px;
+}
+body::-webkit-scrollbar-thumb {
+	background: #3366cc;
+	border-radius: 6px;
+}
+body::-webkit-scrollbar-track {
+	background: #f0f0f0;
+}
+
+body {
+	margin: 0;
+	font-family: Arial, sans-serif;
+	background: #4e1d7f;
+	color: #222;
+}
+
+
+main {
+	padding: 2rem 1rem;
+	display: flex;
+	justify-content: center;
+}
+
+.gallery {
+	display: flex;
+	gap: 2rem;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.image-link {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-decoration: none;
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(192, 79, 244, 0.07);
+	transition: box-shadow 0.2s;
+	padding: 4rem;
+	width: 220px;
+}
+
+.image-link:hover {
+	box-shadow: 0 4px 16px rgba(51,102,204,0.15);
+}
+
+.image-link img {
+	width: 250px;
+	height: 250px;
+	object-fit: cover;
+	margin-bottom: 0.5rem;
+}
+
+.image-link span {
+	color: #3366cc;
+	font-weight: bold;
+	margin-top: 0.5rem;
+}
+
+.Header {
+    text-align: center;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: white;
+    margin-bottom: 2rem;
+    background-color: rgb(14, 14, 106);
+    border-radius: 20px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#user-code-container {
+	/* Extra CSS for user code, can be overridden by JS */
+	pointer-events: none;
+	user-select: all;
+}
