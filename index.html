@@ -9,16 +9,18 @@
 </head>
 <body>
 <script>
-// Simple password protection with localStorage
-const PASSWORD = "SleepIsTheKeyToLife"; // Change this to your desired password
+// Password protection: only set localStorage after successful entry
+const PASSWORD = "SleepIsTheKeyToLife";
 const PASS_KEY = "sitePasswordEntered";
-if (!localStorage.getItem(PASS_KEY)) {
+if (localStorage.getItem(PASS_KEY) !== "true") {
 	let entered = false;
 	while (!entered) {
 		const input = prompt("Enter password to access this site:");
 		if (input === PASSWORD) {
 			localStorage.setItem(PASS_KEY, "true");
 			entered = true;
+			// Optionally reload to ensure all content loads after password
+			location.reload();
 		} else if (input === null) {
 			document.body.innerHTML = '<h2>Access denied.</h2>';
 			throw new Error('Access denied');
