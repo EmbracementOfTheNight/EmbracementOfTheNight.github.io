@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>YouTube Video Search (Fixed Embed Version)</title>
+  <link rel=""stylesheet" href="youtube.css">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -49,58 +50,86 @@
   <script>
     const API_KEY = 'AIzaSyBt5lB25IQUMDuCOTK3TAJNoFu9GYaIxBc';  // Replace this with your YouTube API key
 
-    function searchVideos() {
+    async function searchVideos() {
       const query = document.getElementById('searchInput').value;
       const resultsDiv = document.getElementById('results');
       resultsDiv.innerHTML = 'Loading...';
 
-      fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=6&q=${encodeURIComponent(query)}&key=${API_KEY}`)
-        .then(response => response.json())
-        .then(data => {
-          resultsDiv.innerHTML = '';
-          const videoIds = data.items.map(item => item.id.videoId).join(",");
-          if (!videoIds) {
-            resultsDiv.innerHTML = 'No videos found.';
-            return;
-          }
-          // Now get video details to check embeddable status
-          fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet,player,status&id=${videoIds}&key=${API_KEY}`)
-            .then(response => response.json())
-            .then(videoData => {
-              let foundEmbeddable = false;
-              videoData.items.forEach(item => {
-                if (item.status && item.status.embeddable) {
-                  foundEmbeddable = true;
-                  const videoId = item.id;
-                  const title = item.snippet.title;
-                  const videoDiv = document.createElement('div');
-                  videoDiv.className = 'video';
-                  referrerpolicy="strict-origin-when-cross-origin"
-                  videoDiv.innerHTML = `
-                    <iframe 
-                      src="https://www.youtube-nocookie.com/embed/${videoId}" 
-                      frameborder="0" 
-                      allowfullscreen>
-                    </iframe>
-                    <h2>${title}</h2>
-                  `;
-                  resultsDiv.appendChild(videoDiv);
-                  
-                }
-              });
-              if (!foundEmbeddable) {
-                resultsDiv.innerHTML = 'No embeddable videos found.';
-              }
-            })
-            .catch(error => {
-              console.error('YouTube Video Details API Error:', error);
-              resultsDiv.innerHTML = 'An error occurred while checking video details.';
-            });
-        })
-        .catch(error => {
+      let allVideos = [];
+      let nextPageToken = '';
+      let attempts = 0;
+      const maxAttempts = 5; // Fetch up to 5 pages (max 250 results)
+
+      while (allVideos.length < 12 && attempts < maxAttempts) {
+        let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=50&q=${encodeURIComponent(query)}&key=${API_KEY}`;
+        if (nextPageToken) url += `&pageToken=${nextPageToken}`;
+        let data;
+        try {
+          const response = await fetch(url);
+          data = await response.json();
+        } catch (error) {
           console.error('YouTube API Error:', error);
           resultsDiv.innerHTML = 'An error occurred. Check the console for details.';
-        });
+          return;
+        }
+        if (!data.items || !data.items.length) break;
+        const videoIds = data.items.map(item => item.id.videoId).filter(Boolean);
+        if (!videoIds.length) break;
+        // Get video details for embeddable status
+        let videoData;
+        try {
+          const response = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet,player,status&id=${videoIds.join(",")}&key=${API_KEY}`);
+          videoData = await response.json();
+        } catch (error) {
+          console.error('YouTube Video Details API Error:', error);
+          resultsDiv.innerHTML = 'An error occurred while checking video details.';
+          return;
+        }
+        allVideos = allVideos.concat(videoData.items);
+        if (data.nextPageToken) {
+          nextPageToken = data.nextPageToken;
+        } else {
+          break;
+        }
+        attempts++;
+      }
+
+      resultsDiv.innerHTML = '';
+      if (!allVideos.length) {
+        resultsDiv.innerHTML = 'No videos found.';
+        return;
+      }
+      let shown = 0;
+      for (let i = 0; i < allVideos.length && shown < 6; i++) {
+        const item = allVideos[i];
+        const videoId = item.id;
+        const title = item.snippet.title;
+        const videoDiv = document.createElement('div');
+        videoDiv.className = 'video';
+        if (item.status && item.status.embeddable) {
+          videoDiv.innerHTML = `
+            <iframe 
+              src="https://www.youtube-nocookie.com/embed/${videoId}" 
+              frameborder="0" 
+              allowfullscreen>
+            ></iframe>
+            <h2>${title}</h2>
+          `;
+        } else {
+          videoDiv.innerHTML = `
+            <div style="background:#222;color:#fff;padding:20px;border-radius:8px;">
+              <p>Video unavailable for embedding.</p>
+              <a href="https://youtube.com/watch?v=${videoId}" target="_blank" style="color:#4af;">Watch on YouTube</a>
+              <h2>${title}</h2>
+            </div>
+          `;
+        }
+        resultsDiv.appendChild(videoDiv);
+        shown++;
+      }
+      if (shown < 6) {
+        resultsDiv.innerHTML += `<p>Only ${shown} video(s) found for this search after checking multiple pages.</p>`;
+      }
     }
   </script>
 

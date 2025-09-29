@@ -1,7 +1,7 @@
 /* Custom Scrollbar Styles */
 html {
 	scrollbar-width: thin;
-	scrollbar-color: #3366cc #f0f0f0;
+	scrollbar-color: #770998 #f0f0f0;
 }
 
 /* For Webkit browsers */
@@ -19,7 +19,7 @@ body::-webkit-scrollbar-track {
 body {
 	margin: 0;
 	font-family: Arial, sans-serif;
-	background: #4e1d7f;
+	 background: linear-gradient(to bottom, #c127c9, #8964ff); /* blue to white */
 	color: #222;
 }
 
@@ -35,6 +35,19 @@ main {
 	gap: 2rem;
 	flex-wrap: wrap;
 	justify-content: center;
+	animation: scrolling linear;
+	animation-timeline: view();
+	animation-range: entry 0% cover 50%;
+}
+@keyframes scrolling {
+	from {
+		opacity: 0.5;
+		transform: translateX(-150px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
 }
 
 .image-link {
@@ -50,7 +63,8 @@ main {
 }
 
 .image-link:hover {
-	box-shadow: 0 4px 16px rgba(51,102,204,0.15);
+	box-shadow: 0 10px 20px rgba(255, 255, 255, 0.15);
+	border-radius: 50px;
 }
 
 .image-link img {
@@ -61,7 +75,7 @@ main {
 }
 
 .image-link span {
-	color: #3366cc;
+	color: #ffffff;
 	font-weight: bold;
 	margin-top: 0.5rem;
 }
@@ -83,4 +97,25 @@ main {
 	/* Extra CSS for user code, can be overridden by JS */
 	pointer-events: none;
 	user-select: all;
+}
+
+.spacer {
+	aspect-ratio: 960/300;
+	width: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+}
+@keyframes scrolling {
+	from {
+		opacity: 0.5;
+		transform: translateX(-150px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+.layer {
+	background-image: url(layered-steps-haikei\ \(1\).svg);
 }

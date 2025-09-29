@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Site in about:blank</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin-top: 100px; }
+    button { font-size: 1.2em; padding: 12px 32px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Open This Site in about:blank</h1>
+  <button onclick="openInAboutBlank()">For youtube to work, open in about:Blank</button>
+  <script>
+    function openInAboutBlank() {
+      const win = window.open('about:blank');
+      win.document.write(`
+        <iframe src="youtube.html" style="width:100vw; height:100vh; border:none;"></iframe>
+      `);
+      win.document.close();
+    }
+  </script>
+</body>
+</html>

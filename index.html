@@ -8,13 +8,31 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
+<script>
+// Simple password protection with localStorage
+const PASSWORD = "SleepIsTheKeyToLife"; // Change this to your desired password
+const PASS_KEY = "sitePasswordEntered";
+if (!localStorage.getItem(PASS_KEY)) {
+	let entered = false;
+	while (!entered) {
+		const input = prompt("Enter password to access this site:");
+		if (input === PASSWORD) {
+			localStorage.setItem(PASS_KEY, "true");
+			entered = true;
+		} else if (input === null) {
+			document.body.innerHTML = '<h2>Access denied.</h2>';
+			throw new Error('Access denied');
+		}
+	}
+}
+</script>
 	<header class="Header">
 		<h1>Game selection</h1>
 		<p>Click on a game to play it!</p>
 	</header>
 	<main>
 		<section class="gallery">
-			<a href="geometrydashlite.io/geometry-dash-lite.html" target="_blank" class="image-link">
+			<a href="geometrydashgames.io/geometry-dash-lite/geo.html" target="_blank" class="image-link">
 				<img src="PictureStorage/1702661368_Geometrydashlogo.webp">
 				<span>Geometry Dash</span>
 			</a>
@@ -26,15 +44,15 @@
 				<img src="PictureStorage/mc11.webp">
 				<span>Minecraft</span>
 			</a>
-			<a href="youtube.html" target="_blank" class="image-link">
-				<img src="PictureStorage/TocaBocaImage.jpg">
+			<a href="AboutBlank.html" target="_blank" class="image-link">
+				<img src="PictureStorage/youtube-logo-youtube-icon-transparent-free-png.webp">
+				<span>youtube</span>
+			</a>
+			<a href="TocaBoca/toca-life-world/toca.html" target="_blank" class="image-link">
+				<img src="PictureStorage/tocabocaphoto.jpg">
 				<span>Toca Boca</span>
 			</a>
-			<a href="https://example.com/2" target="_blank" class="image-link">
-				<img src="https://via.placeholder.com/200x150?text=Image+2">
-				<span>Link 2</span>
-			</a>
-			<a href="https://example.com/3" target="_blank" class="image-link">
+			<a href="" target="_blank" class="image-link">
 				<img src="https://via.placeholder.com/200x150?text=Image+3">
 				<span>Link 3</span>
 			</a>
@@ -112,3 +130,5 @@ codeDiv.style.fontWeight = 'bold';
 codeDiv.style.fontFamily = 'monospace';
 codeDiv.style.zIndex = '9999';
 </script>
+
+<div class="spacer layer"></div>
