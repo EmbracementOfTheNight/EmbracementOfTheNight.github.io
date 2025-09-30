@@ -1,136 +1,35 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>SleepHaven</title>
-	<link rel="stylesheet" href="style.css">
-</head>
-<body>
 <script>
-// Password protection: only set localStorage after successful entry
-const PASSWORD = "Supercalifragilisticexpialidocious";
-const PASS_KEY = "sitePasswordEntered";
-if (localStorage.getItem(PASS_KEY) !== "true") {
-	let entered = false;
-	while (!entered) {
-		const input = prompt("Enter password to access this site:");
-		if (input === PASSWORD) {
-			localStorage.setItem(PASS_KEY, "true");
-			entered = true;
-			// Optionally reload to ensure all content loads after password
-			location.reload();
-		} else if (input === null) {
-			document.body.innerHTML = '<h2>Access denied.</h2>';
-			throw new Error('Access denied');
-		}
-	}
+// Password protection: prompt for password and check with backend
+async function checkPassword() {
+  if (!sessionStorage.getItem('galleryAccess')) {
+    let input = prompt("Enter the password to access the gallery:");
+    if (!input) return;
+    try {
+      const response = await fetch('http://localhost:3001/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: input })
+      });
+      const result = await response.json();
+      if (result.success) {
+        sessionStorage.setItem('galleryAccess', 'true');
+        window.location.href = "gallery.html";
+      } else {
+        alert("Incorrect password. Please reload the page to try again.");
+      }
+    } catch (err) {
+      alert("Could not connect to password server.");
+    }
+  }
 }
-</script>
-	<header class="Header">
-		<h1>Game selection</h1>
-		<p>Click on a game to play it!</p>
-	</header>
-	<main>
-		<section class="gallery">
-			<a href="geometrydash/Geometry.html" target="_blank" class="image-link">
-				<img src="PictureStorage/1702661368_Geometrydashlogo.webp">
-				<span>Geometry Dash</span>
-			</a>
-			<a href="deltarune.html" target="_blank" class="image-link">
-				<img src="PictureStorage/delta.png">
-				<span>DELTARUNE</span>
-			</a>
-			<a href="mc/minecraft.html" target="_blank" class="image-link">
-				<img src="PictureStorage/mc11.webp">
-				<span>Minecraft</span>
-			</a>
-			<a href="AboutBlank.html" target="_blank" class="image-link">
-				<img src="PictureStorage/youtube-logo-youtube-icon-transparent-free-png.webp">
-				<span>youtube</span>
-			</a>
-			<a href="TocaBoca/toca-life-world/toca.html" target="_blank" class="image-link">
-				<img src="PictureStorage/tocabocaphoto.jpg">
-				<span>Toca Boca</span>
-			</a>
-			<a href="slope/slope.html" target="_blank" class="image-link">
-				<img src="PictureStorage/slope.jpg">
-				<span>SLOPE</span>
-			</a>
-			<a href="bitlife/bit.html" target="_blank" class="image-link">
-				<img src="PictureStorage/How-to-Start-a-Successful-Business-in-Bitlife-removebg-preview.png">
-				<span>bitlife</span>
-			</a>
-			<a href="retrobowl/Bowl.html" target="_blank" class="image-link">
-				<img src="PictureStorage/retro.png">
-				<span>Retro Bowl</span>
-			</a>
-			<a href="boxingrandom/boxing.html" target="_blank" class="image-link">
-				<img src="PictureStorage/OIP.webp">
-				<span>Boxing Random</span>
-			</a>
-            <a href="basketrandom/Basket.html" target="_blank" class="image-link">
-				<img src="PictureStorage/baskie.webp">
-				<span>Basketball Random</span>
-			</a>
-			<a href="https://example.com/2" target="_blank" class="image-link">
-				<img src="https://via.placeholder.com/200x150?text=Image+2">
-				<span>Link 2</span>
-			</a>
-			<a href="https://example.com/3" target="_blank" class="image-link">
-				<img src="https://via.placeholder.com/200x150?text=Image+3">
-				<span>Link 3</span>
-			</a>
-            <a href="https://example.com/1" target="_blank" class="image-link">
-				<img src="https://via.placeholder.com/200x150?text=Image+1">
-				<span>Link 1</span>
-			</a>
-			<a href="https://example.com/2" target="_blank" class="image-link">
-				<img src="https://via.placeholder.com/200x150?text=Image+2">
-				<span>Link 2</span>
-			</a>
-			<a href="https://example.com/3" target="_blank" class="image-link">
-				<img src="https://via.placeholder.com/200x150?text=Image+3">
-				<span>Link 3</span>
-			</a>
-		</section>
-	</main>
-	</main>
-	<div id="user-code-container"></div>
-</body>
-	</html>
-<script>
-// Generate a random code (4 alphanumeric chars)
-function generateUserCode(length = 4) {
-	const chars = '123456789';
-	let code = '';
-	for (let i = 0; i < length; i++) {
-		code += chars.charAt(Math.floor(Math.random() * chars.length));
-	}
-	return code;
-}
+checkPassword();
 
-// Get or create user code
-let userCode = localStorage.getItem('userCode');
-if (!userCode) {
-	userCode = generateUserCode();
-	localStorage.setItem('userCode', userCode);
-}
-
-// Show code in top right
-const codeDiv = document.getElementById('user-code-container');
-codeDiv.textContent = `Your code: ${userCode}`;
-codeDiv.style.position = 'fixed';
-codeDiv.style.top = '10px';
-codeDiv.style.right = '20px';
-codeDiv.style.background = 'rgba(30,30,60,0.95)';
-codeDiv.style.color = '#fff';
-codeDiv.style.padding = '50px, 50px';
-codeDiv.style.borderRadius = '12px';
-codeDiv.style.fontWeight = 'bold';
-codeDiv.style.fontFamily = 'monospace';
-codeDiv.style.zIndex = '9999';
+// Clear sessionStorage when the tab is hidden or loses focus
+window.addEventListener('visibilitychange', function() {
+  if (document.hidden) {
+    sessionStorage.removeItem('galleryAccess');
+  }
+});
 </script>
 
-<div class="spacer layer"></div>
+

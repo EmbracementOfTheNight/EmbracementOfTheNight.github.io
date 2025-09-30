@@ -99,23 +99,25 @@ main {
 	user-select: all;
 }
 
-.spacer {
-	aspect-ratio: 960/300;
-	width: 100%;
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: cover;
+.custom-shape-divider-bottom-1759229415 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
 }
-@keyframes scrolling {
-	from {
-		opacity: 0.5;
-		scale: 0.5;
-	}
-	to {
-		opacity: 1;
-		scale: 1;
-	}
+
+.custom-shape-divider-bottom-1759229415 svg {
+    position: relative;
+    display: block;
+    width: calc(135% + 1.3px);
+    height: 180px;
 }
-.layer {
-	background-image: url(wave-haikei.svg);
+
+.custom-shape-divider-bottom-1759229415 .shape-fill {
+    fill: #6700C2;
 }
+
+
