@@ -1,7 +1,7 @@
 // script.js (frontend)
 (() => {
   // REPLACE this with your Render backend URL:
-  const API_BASE = 'https://embracementofthenight-github-io.onrender.com'; // <-- change this
+  const API_BASE = 'https://embracementofthenight-github-io-1.onrender.com'; // <-- change this
 
   const enterBtn = document.getElementById('enterBtn');
   const messageDiv = document.getElementById('message');
