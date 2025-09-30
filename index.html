@@ -1,23 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Protected Site - Login</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <style>
-    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; padding: 24px; }
-    .center { max-width: 600px; margin: 40px auto; text-align: center; }
-    button { padding: 8px 16px; font-size: 16px; }
-  </style>
+  <meta charset="UTF-8">
+  <title>Password Protected Site</title>
 </head>
 <body>
-  <div class="center">
-    <h1>Protected Area</h1>
-    <p>This site requires a password to access the dashboard.</p>
-    <button id="enterBtn">Enter Password</button>
-    <div id="message" style="margin-top:18px;color:#b00;"></div>
-  </div>
+  <h1>Welcome to the Secret Page</h1>
+  <p id="content">Only visible with the right password!</p>
 
-  <script src="passwordFront.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
