@@ -42,11 +42,11 @@ main {
 @keyframes scrolling {
 	from {
 		opacity: 0.5;
-		transform: translateX(-150px);
+		scale: 0.5;
 	}
 	to {
 		opacity: 1;
-		transform: translateX(0);
+		scale: 1;
 	}
 }
 
