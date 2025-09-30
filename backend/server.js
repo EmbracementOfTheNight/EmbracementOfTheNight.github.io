@@ -4,7 +4,7 @@ const app = express();
 const PORT = 3001;
 
 // Change this password to your desired value
-const PASSWORD = 'Correct';
+const PASSWORD = 'right';
 
 app.use(cors());
 app.use(express.json());
