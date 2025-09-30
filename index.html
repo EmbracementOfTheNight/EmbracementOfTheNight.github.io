@@ -28,8 +28,9 @@ checkPassword();
 window.addEventListener('visibilitychange', function() {
   if (document.hidden) {
     sessionStorage.removeItem('galleryAccess');
+  } else if (!sessionStorage.getItem('galleryAccess')) {
+    // When returning to the tab, re-check password if not set
+    checkPassword();
   }
 });
 </script>
-
-
