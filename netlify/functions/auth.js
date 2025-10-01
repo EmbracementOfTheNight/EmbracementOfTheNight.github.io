@@ -1,5 +1,5 @@
 exports.handler = async (event) => {
-  const PASSWORD = 'p'; // <-- Set your password here
+  const PASSWORD = 'p422w0rd'; // <-- Set your password here
   const { password } = JSON.parse(event.body || '{}');
 
   if (password === PASSWORD) {
