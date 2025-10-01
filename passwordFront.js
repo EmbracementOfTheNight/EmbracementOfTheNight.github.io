@@ -1,48 +1,37 @@
-// script.js (frontend)
-(() => {
-  // REPLACE this with your Render backend URL:
-  const API_BASE = 'https://embracementofthenight-github-io.onrender.com'; // <-- change this
+function hideContent() {
+  document.body.innerHTML = '<h2>Access denied.</h2>';
+  document.body.style.background = '#fff';
+}
 
-  const enterBtn = document.getElementById('enterBtn');
-  const messageDiv = document.getElementById('message');
-
-  async function promptAndAuth() {
-    messageDiv.textContent = '';
-    const input = prompt('Enter the password to access this site:');
+async function checkPassword() {
+  if (!sessionStorage.getItem('indexAccess')) {
+    hideContent();
+    let input = prompt("Enter the password to access this site:");
     if (!input) {
-      messageDiv.textContent = 'Access denied.';
+      hideContent();
       return;
     }
 
     try {
-      const res = await fetch(`${API_BASE}/auth`, {
+      const response = await fetch('/.netlify/functions/auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: input })
       });
 
-      if (!res.ok) {
-        messageDiv.textContent = 'Server error. Try again later.';
-        console.error('Non-200 response:', res.status, await res.text());
-        return;
-      }
+      const result = await response.json();
 
-      const result = await res.json();
-
-      if (result && result.success) {
-        // Redirect to dashboard (relative page within Netlify site)
-        window.location.href = 'gallery.html';
+      if (result.success) {
+        sessionStorage.setItem('indexAccess', 'true');
+        location.reload();
       } else {
-        messageDiv.textContent = 'Access denied. Wrong password.';
+        hideContent();
       }
     } catch (err) {
-      console.error('Fetch error:', err);
-      messageDiv.textContent = 'Access denied. (Network or server error)';
+      console.error('Error:', err);
+      hideContent();
     }
   }
+}
 
-  enterBtn.addEventListener('click', promptAndAuth);
-
-  // Optionally prompt immediately on page load:
-  // window.addEventListener('DOMContentLoaded', promptAndAuth);
-})();
+document.addEventListener('DOMContentLoaded', checkPassword);
