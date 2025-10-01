@@ -1,125 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>SleepHaven</title>
-	<link rel="stylesheet" href="style.css">
-	<script src="passwordOpen.js"></script>
+  <meta charset="UTF-8">
+  <title>Password Protected Site</title>
 </head>
 <body>
+  <h1>Welcome to the Secret Page</h1>
+  <p id="content">Only visible with the right password!</p>
 
-  
-	<header class="Header">
-		<h1>Game selection</h1>
-		<p>Click on a game to play it!</p>
-	</header>
-	<main>
-		<section class="gallery">
-			<a href="geometrydash/Geometry.html" target="_blank" class="image-link">
-				<img src="PictureStorage/1702661368_Geometrydashlogo.webp">
-				<span>Geometry Dash</span>
-			</a>
-			<a href="deltarune.html" target="_blank" class="image-link">
-				<img src="PictureStorage/delta.png">
-				<span>DELTARUNE</span>
-			</a>
-			<a href="mc/minecraft.html" target="_blank" class="image-link">
-				<img src="PictureStorage/mc11.webp">
-				<span>Minecraft</span>
-			</a>
-			<a href="AboutBlank.html" target="_blank" class="image-link">
-				<img src="PictureStorage/youtube-logo-youtube-icon-transparent-free-png.webp">
-				<span>youtube</span>
-			</a>
-			<a href="TocaBoca/toca-life-world/toca.html" target="_blank" class="image-link">
-				<img src="PictureStorage/tocabocaphoto.jpg">
-				<span>Toca Boca</span>
-			</a>
-			<a href="slope/slope.html" target="_blank" class="image-link">
-				<img src="PictureStorage/slope.jpg">
-				<span>SLOPE</span>
-			</a>
-			<a href="bitlife/bit.html" target="_blank" class="image-link">
-				<img src="PictureStorage/How-to-Start-a-Successful-Business-in-Bitlife-removebg-preview.png">
-				<span>bitlife</span>
-			</a>
-			<a href="retrobowl/Bowl.html" target="_blank" class="image-link">
-				<img src="PictureStorage/retro.png">
-				<span>Retro Bowl</span>
-			</a>
-			<a href="boxingrandom/boxing.html" target="_blank" class="image-link">
-				<img src="PictureStorage/OIP.webp">
-				<span>Boxing Random</span>
-			</a>
-            <a href="basketrandom/Basket.html" target="_blank" class="image-link">
-				<img src="PictureStorage/baskie.webp">
-				<span>Basketball Random</span>
-			</a>
-			<a href="https://example.com/2" target="_blank" class="image-link">
-				<img src="https://via.placeholder.com/200x150?text=Image+2">
-				<span>Link 2</span>
-			</a>
-			<a href="https://example.com/3" target="_blank" class="image-link">
-				<img src="https://via.placeholder.com/200x150?text=Image+3">
-				<span>Link 3</span>
-			</a>
-            <a href="https://example.com/1" target="_blank" class="image-link">
-				<img src="https://via.placeholder.com/200x150?text=Image+1">
-				<span>Link 1</span>
-			</a>
-			<a href="https://example.com/2" target="_blank" class="image-link">
-				<img src="https://via.placeholder.com/200x150?text=Image+2">
-				<span>Link 2</span>
-			</a>
-			<a href="https://example.com/3" target="_blank" class="image-link">
-				<img src="https://via.placeholder.com/200x150?text=Image+3">
-				<span>Link 3</span>
-			</a>
-		</section>
-
-		<div id="user-code-container"></div>
-	</main>
-	</main>
+  <script src="passwordFront.js"></script>
 </body>
-	</html>
-<script>
-// Generate a random code (4 alphanumeric chars)
-function generateUserCode(length = 4) {
-	const chars = '123456789';
-	let code = '';
-	for (let i = 0; i < length; i++) {
-		code += chars.charAt(Math.floor(Math.random() * chars.length));
-	}
-	return code;
-}
-
-// Get or create user code
-let userCode = localStorage.getItem('userCode');
-if (!userCode) {
-	userCode = generateUserCode();
-	localStorage.setItem('userCode', userCode);
-}
-
-// Show code in top right
-const codeDiv = document.getElementById('user-code-container');
-codeDiv.textContent = `Your code: ${userCode}`;
-codeDiv.style.position = 'fixed';
-codeDiv.style.top = '10px';
-codeDiv.style.right = '20px';
-codeDiv.style.background = 'rgba(30,30,60,0.95)';
-codeDiv.style.color = '#fff';
-codeDiv.style.padding = '50px, 50px';
-codeDiv.style.borderRadius = '12px';
-codeDiv.style.fontWeight = 'bold';
-codeDiv.style.fontFamily = 'monospace';
-codeDiv.style.zIndex = '9999';
-</script>
-<div class="custom-shape-divider-bottom-1759229415">
-    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-        <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
-        <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
-        <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path>
-    </svg>
-</div>
+</html>
