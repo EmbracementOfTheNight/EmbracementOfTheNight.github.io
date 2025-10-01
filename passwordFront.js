@@ -23,7 +23,7 @@ async function checkPassword() {
 
       if (result.success) {
         sessionStorage.setItem('indexAccess', 'true');
-        location.reload();
+        window.location.href = 'gallery.html';
       } else {
         hideContent();
       }
