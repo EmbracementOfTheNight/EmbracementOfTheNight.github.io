@@ -29,7 +29,7 @@
     }
 
     try {
-      const response = await fetch('/.netlify/functions/auth', {
+      const response = await fetch('https://embracementofthenight-github-io-2.onrender.com', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: input })
