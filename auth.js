@@ -1,55 +1,53 @@
 (function () {
-  const STORAGE_KEY = 'siteAuthed_v1'; // change to expire existing logins
-  const PERSIST = true;                 // true = localStorage (persists across browser sessions)
-  const storage = PERSIST ? localStorage : sessionStorage;
+  const STORAGE_KEY = 'siteAuth';
+  const AUTH_PAGE = '/gallery.html';  // page to redirect on success
 
-  // the password hash approach is recommended — but for simplicity this example uses plaintext check.
-  // Replace with a hash-check if you prefer (I can provide that).
-  const CORRECT_PASSWORD = 'p422w0rd'; // TEMP: replace or use hashed-check
+  // Check if already authenticated
+  if (localStorage.getItem(STORAGE_KEY) === 'true') {
+    // Redirect instantly to gallery.html
+    window.location.href = AUTH_PAGE;
+    return; // stop further execution
+  }
 
-  // Run early: hide the document to avoid flashing protected content
+  // Hide content until auth check completes
   document.documentElement.style.visibility = 'hidden';
 
-  function showDenied() {
+  function showAccessDenied() {
     document.documentElement.style.visibility = '';
-    document.body.innerHTML = '<h2 style="text-align:center; margin-top:20vh">Access denied.</h2>';
+    document.body.innerHTML = '<h2>Access denied.</h2>';
     document.body.style.background = '#fff';
   }
 
-  function showPage() {
-    // reveal the page after successful auth
-    document.documentElement.style.visibility = '';
-  }
-
-  async function promptAndAuth() {
+  async function promptPassword() {
     const input = prompt('Enter the password to access this site:');
-    if (!input) { showDenied(); return false; }
-    // If you are storing a hash instead of plaintext, hash 'input' and compare.
-    if (input === CORRECT_PASSWORD) {
-      storage.setItem(STORAGE_KEY, 'true');
-      return true;
+    if (!input) {
+      showAccessDenied();
+      return;
+    }
+
+    // Hash the input to compare with stored hash
+    const hash = await sha256(input);
+
+    // Compare with your precomputed hash (example below)
+    const storedHash = '512cbd0bf2b0e3cd795f17b8751c6efd8f4e716ed76875684a2276a97ab3f456';
+
+    if (hash === storedHash) {
+      localStorage.setItem(STORAGE_KEY, 'true');
+      document.documentElement.style.visibility = '';
+      window.location.href = AUTH_PAGE;
     } else {
-      showDenied();
-      return false;
+      showAccessDenied();
     }
   }
 
-  (async function main() {
-    try {
-      // If we already marked the user as authorized, immediately show page
-      if (storage.getItem(STORAGE_KEY) === 'true') {
-        showPage();
-        return;
-      }
+  // Simple SHA-256 hashing function
+  async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
 
-      // Not authorized yet -> prompt
-      const ok = await promptAndAuth();
-      if (ok) {
-        showPage();
-      }
-    } catch (err) {
-      console.error('Auth error', err);
-      showDenied();
-    }
-  })();
+  // Start password prompt
+  promptPassword();
 })();
