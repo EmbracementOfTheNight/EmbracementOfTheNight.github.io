@@ -41,9 +41,8 @@
         storage.setItem(STORAGE_KEY, 'true');
         // reveal the page now that it's authorized
         document.documentElement.style.visibility = '';
-        // OPTIONAL: if you want to always land on a specific page after login,
-        // uncomment the next line:
-        // window.location.href = 'gallery.html';
+       
+         window.location.href = 'gallery.html';
       } else {
         hideDenied();
       }
