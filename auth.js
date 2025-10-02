@@ -1,17 +1,18 @@
 (function () {
-  const STORAGE_KEY = 'siteAuth';
+  const STORAGE_KEY = 'indexAccess'; // your localStorage key
+  const PERSIST = true; // whether to use localStorage or sessionStorage
+  const storage = PERSIST ? localStorage : sessionStorage;
 
-  // Check if already authenticated
-  if (localStorage.getItem(STORAGE_KEY) === 'true') {
-    // Redirect instantly to gallery.html
-    window.location.href = '/gallery.html';
-    return; // stop further execution
+  // If authorized, reveal the page (or do nothing)
+  if (storage.getItem(STORAGE_KEY) === 'true') {
+    document.documentElement.style.visibility = ''; // show page content
+    return; // allow user to stay on the current page
   }
 
-  // Hide content until auth check completes
+  // Hide content until authenticated
   document.documentElement.style.visibility = 'hidden';
 
-  function showAccessDenied() {
+  function denyAccess() {
     document.documentElement.style.visibility = '';
     document.body.innerHTML = '<h2>Access denied.</h2>';
     document.body.style.background = '#fff';
@@ -20,33 +21,31 @@
   async function promptPassword() {
     const input = prompt('Enter the password to access this site:');
     if (!input) {
-      showAccessDenied();
+      denyAccess();
       return;
     }
 
-    // Hash the input to compare with stored hash
-    const hash = await sha256(input);
+    try {
+      const response = await fetch('/auth', { // your backend endpoint
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: input })
+      });
 
-    // Compare with your precomputed hash (example below)
-    const storedHash = '512cbd0bf2b0e3cd795f17b8751c6efd8f4e716ed76875684a2276a97ab3f456';
+      const result = await response.json();
 
-    if (hash === storedHash) {
-      localStorage.setItem(STORAGE_KEY, 'true');
-      document.documentElement.style.visibility = '';
-      window.location.href = '/gallery.html';
-    } else {
-      showAccessDenied();
+      if (result && result.success) {
+        storage.setItem(STORAGE_KEY, 'true');
+        document.documentElement.style.visibility = '';
+        // Stay on the current page after successful login
+      } else {
+        denyAccess();
+      }
+    } catch (err) {
+      console.error('Auth error:', err);
+      denyAccess();
     }
   }
 
-  // Simple SHA-256 hashing function
-  async function sha256(message) {
-    const msgBuffer = new TextEncoder().encode(message);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  }
-
-  // Start password prompt
   promptPassword();
 })();
