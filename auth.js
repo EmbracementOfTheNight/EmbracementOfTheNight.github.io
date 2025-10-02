@@ -1,11 +1,10 @@
 (function () {
   const STORAGE_KEY = 'siteAuth';
-  const AUTH_PAGE = '/gallery.html';  // page to redirect on success
 
   // Check if already authenticated
   if (localStorage.getItem(STORAGE_KEY) === 'true') {
     // Redirect instantly to gallery.html
-    window.location.href = AUTH_PAGE;
+    window.location.href = '/gallery.html';
     return; // stop further execution
   }
 
@@ -34,7 +33,7 @@
     if (hash === storedHash) {
       localStorage.setItem(STORAGE_KEY, 'true');
       document.documentElement.style.visibility = '';
-      window.location.href = AUTH_PAGE;
+      window.location.href = '/gallery.html';
     } else {
       showAccessDenied();
     }
